@@ -1,10 +1,9 @@
-function truss()
+function truss(model_file)
 
     add_library_path();
+    model = load_model(model_file);
 
 end
-
-
 
 
 function add_library_path()
