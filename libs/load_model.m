@@ -20,7 +20,7 @@ end
 function elements = fix_elements(elements)
     elements = cell2mat(elements);
     for i = 1:numel(elements)
-        elements(i).nodes = cell2mat(elements(i).nodes);
+        elements(i).nodes = sort(cell2mat(elements(i).nodes));
     end
 end
 
