@@ -3,10 +3,10 @@
   "nodes": [
     {"coords": [ 0, 0, 0], "constraint": "fixed"},
     {"coords": [ 5, 5, 0], "constraint": "free"},
-    {"coords": [10, 0, 0], "constraint": "pin"},
-    {"coords": [15, 5, 0], "constraint": "pin"},
-    {"coords": [20, 0, 0], "constraint": "pin"},
-    {"coords": [25, 5, 0], "constraint": "pin"},
+    {"coords": [10, 0, 0], "constraint": "free"},
+    {"coords": [15, 5, 0], "constraint": "free"},
+    {"coords": [20, 0, 0], "constraint": "free"},
+    {"coords": [25, 5, 0], "constraint": "free"},
     {"coords": [30, 0, 0], "constraint": "slider"}
   ],
   "elements": [
