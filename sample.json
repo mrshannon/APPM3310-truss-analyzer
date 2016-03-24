@@ -1,12 +1,13 @@
 {
+  "dimensions": 2,
   "nodes": [
-    {"coords": [  0,  0, 0], "constraint": "fixed"},
-    {"coords": [ 50, 50, 0], "constraint": "free"},
-    {"coords": [100,  0, 0], "constraint": "pin"},
-    {"coords": [150, 50, 0], "constraint": "pin"},
-    {"coords": [200,  0, 0], "constraint": "pin"},
-    {"coords": [250, 50, 0], "constraint": "pin"},
-    {"coords": [300,  0, 0], "constraint": "slider"}
+    {"coords": [ 0, 0, 0], "constraint": "fixed"},
+    {"coords": [ 5, 5, 0], "constraint": "free"},
+    {"coords": [10, 0, 0], "constraint": "pin"},
+    {"coords": [15, 5, 0], "constraint": "pin"},
+    {"coords": [20, 0, 0], "constraint": "pin"},
+    {"coords": [25, 5, 0], "constraint": "pin"},
+    {"coords": [30, 0, 0], "constraint": "slider"}
   ],
   "elements": [
     {"nodes": [1, 2], "material": "steel"},

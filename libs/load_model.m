@@ -1,6 +1,7 @@
 function model = load_model(file)
     raw = parse_json(fileread(file));
     raw = raw{1};
+    model.dimensions = raw.dimensions;
     model.nodes = fix_nodes(raw.nodes);
     model.elements = fix_elements(raw.elements);
     model.materials = raw.materials;
