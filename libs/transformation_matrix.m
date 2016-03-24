@@ -5,5 +5,5 @@ function T = transformation_matrix(model, element_number)
     v = p2-p1;
     u = v/norm(v);
     tmp = [u; null(u)'];
-    T = [tmp, eye(size(tmp)); eye(size(tmp)), tmp];
+    T = [tmp, zeros(size(tmp)); zeros(size(tmp)), tmp];
 end
