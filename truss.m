@@ -1,8 +1,9 @@
-function truss(model_file)
-
+function Ke = truss(model_file)
     add_library_path();
     model = load_model(model_file);
-
+    for i = 1:numel(model.elements)
+        Ke{i} = global_stiffness_matrix(model, i);
+    end
 end
 
 
