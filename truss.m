@@ -1,9 +1,31 @@
-function model = truss(model_file)
+function model = truss(varargin)
     add_library_path();
-    model = load_model(model_file);
-    model = solve_displacements(model);
-    model = solve_stresses(model);
-    model = solve_forces(model);
+
+    % Load the model file.
+    for i = 1:nargin
+        if varargin{i}(1) ~= '-'
+            model = load_model(varargin{i});
+        end
+    end
+
+    % Plot the model.
+    figure_handle = [];
+    if any(ismember({'-p', '--plot'}, varargin))
+        figure_handle = plot_model(model);
+    end
+
+    % Solve the model.
+    if any(ismember({'-s', '--sovle'}, varargin))
+        model = solve_model(model);
+    else
+        return;
+    end
+
+    % Plot the result.
+    if any(ismember({'-p', '--plot'}, varargin))
+        figure_handle = plot_result(model);
+    end
+
 end
 
 
