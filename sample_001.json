@@ -3,8 +3,8 @@
   "dimensions": 2,
   "nodes": [
     {"coords": [ 0,  0, 0], "constraint": "fixed"},
-    {"coords": [10,  0, 0], "constraint": "free"},
-    {"coords": [10, 10, 0], "constraint": "slider"}
+    {"coords": [10,  0, 0], "constraint": "slider"},
+    {"coords": [10, 10, 0], "constraint": "free"}
   ],
   "elements": [
     {"nodes": [1, 2], "material": "mat1"},
@@ -12,7 +12,7 @@
     {"nodes": [3, 1], "material": "mat3"}
   ],
   "forces": [
-    {"node": 4, "vector": [0, -100, 0]}
+    {"node": 3, "vector": [2, 1, 0]}
   ],
   "materials": {
     "mat1": {"modulus":  50, "area": 2},
