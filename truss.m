@@ -8,22 +8,17 @@ function model = truss(varargin)
         end
     end
 
+    % Solve the model.
+    plot_result = false;
+    if any(ismember({'-s', '--sovle'}, varargin))
+        model = solve_model(model);
+        plot_result = true;
+    end
+
     % Plot the model.
     figure_handle = [];
     if any(ismember({'-p', '--plot'}, varargin))
-        figure_handle = plot_model(model);
-    end
-
-    % Solve the model.
-    if any(ismember({'-s', '--sovle'}, varargin))
-        model = solve_model(model);
-    else
-        return;
-    end
-
-    % Plot the result.
-    if any(ismember({'-p', '--plot'}, varargin))
-        figure_handle = plot_result(model);
+        figure_handle = plot_model(model, plot_result);
     end
 
 end
