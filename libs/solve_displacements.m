@@ -13,7 +13,7 @@ function model = solve_displacements(model)
 
     % Store displacements
     for i = 1:numel(model.nodes)
-        idx = (i-1)*2 + [1:model.dimensions];
+        idx = (i-1)*model.dimensions + (1:model.dimensions);
         delta = zeros(size(model.nodes(i).coords));
         delta(1:model.dimensions) = u(idx);
         model.nodes(i).delta = delta;

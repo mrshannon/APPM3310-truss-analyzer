@@ -9,13 +9,13 @@ function model = solve_stresses(model)
         ue = model.nodes(element.nodes(1)).delta;
         u(1:model.dimensions) = ue(1:model.dimensions);
         ue = model.nodes(element.nodes(2)).delta;
-        u([1:model.dimensions] + model.dimensions) ...
+        u((1:model.dimensions) + model.dimensions) ...
             = ue(1:model.dimensions);
 
         % Calculate change in element length.
         T = transformation_matrix(model, i);
         ubar = T*u;
-        d = ubar(3) - ubar(1);
+        d = ubar(model.dimensions+1) - ubar(1);
 
         % Find original length of element.
         p1 = model.nodes(element.nodes(1)).coords(1:model.dimensions);
