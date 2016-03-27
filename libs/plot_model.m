@@ -42,13 +42,7 @@ function [axis_bounds, border] = ...
     % Compute border width.
     border = (max_coords - min_coords)*c.border_width;
     border = border(1:model.dimensions);
-
-    % Fix zero width dimensions.
-    for i = 1:model.dimensions
-        if border(i) <= 10*eps
-            border(i) = mean(border);
-        end
-    end
+    border = repmat(mean(border), size(border));
 
     % Compute axis bounds.
     axis_bounds = [];
@@ -60,9 +54,14 @@ end
 
 
 function plot_forces(model, c)
+
+    % Compute maximum force.
+    max_force = max(sqrt(sum(cat(1, model.forces.vector).^2, 2)));
+
+    % Loop over each force.
     for i = 1:numel(model.forces)
 
-        % Compute base of frorce vector.
+        % Compute base of force vector.
         base = model.nodes(model.forces(i).node).coords;
         if c.plot_result
             base = base + model.nodes(model.forces(i).node).delta;
@@ -71,7 +70,7 @@ function plot_forces(model, c)
 
         % Compute length and tip of force vector (not based on force).
         vector = model.forces(i).vector(1:model.dimensions);
-        vector = vector/norm(vector)*mean(c.border)*0.75;
+        vector = vector/max_force*mean(c.border)*0.5;
         tip = base + vector;
 
         % Draw vector.
@@ -82,16 +81,17 @@ function plot_forces(model, c)
 
         % Draw label.
         str = sprintf('F_{%d}', i);
+        unit_vector = vector/norm(vector)*mean(c.border);
         switch model.dimensions
             case 2
                 h = text(...
-                    tip(1) + vector(1)*0.3, ...
-                    tip(2) + vector(2)*0.3, str);
+                    tip(1) + unit_vector(1)*0.15, ...
+                    tip(2) + unit_vector(2)*0.15, str);
             case 3
                 h = text(...
-                    tip(1) + vector(1)*0.3, ...
-                    tip(2) + vector(2)*0.3, ...
-                    tip(3) + vector(3)*0.3, str);
+                    tip(1) + unit_vector(1)*0.15, ...
+                    tip(2) + unit_vector(2)*0.15, ...
+                    tip(3) + unit_vector(3)*0.15, str);
         end
         h.VerticalAlignment = 'middle';
         h.HorizontalAlignment = 'center';
