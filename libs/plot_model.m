@@ -1,3 +1,50 @@
+% figure_handle = plot_model(model, plot_result)
+%
+%   Draw truss and optionally loaded model with colormapped stresses.
+%
+% Inputs:
+%   model:
+%       Model structure.
+%
+%   plot_result:
+%       True if the result is to be plotted.  False to only plot the
+%       unloaded truss.
+%
+% Output:
+%   figure_handle:
+%       Handle to figure where model is plotted.
+%
+
+% Copyright (c) 2016, Michael R. Shannon <mrshannon.aerospace@gmail.com>
+% All rights reserved.
+%
+% Redistribution and use in source and binary forms, with or without
+% modification, are permitted provided that the following conditions are
+% met:
+%
+% 1. Redistributions of source code must retain the above copyright
+%    notice, this list of conditions and the following disclaimer.
+%
+% 2. Redistributions in binary form must reproduce the above copyright
+%    notice, this list of conditions and the following disclaimer in the
+%    documentation and/or other materials provided with the distribution.
+%
+% 3. Neither the name of the copyright holder nor the names of its
+%    contributors may be used to endorse or promote products derived
+%    from this software without specific prior written permission.
+%
+% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+% "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+% LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+% A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+% HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+% SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+% LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+% DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+% THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+% (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+% OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 function figure_handle = plot_model(model, plot_result)
 
     c = config();
@@ -27,6 +74,24 @@ function figure_handle = plot_model(model, plot_result)
 end
 
 
+% [axis_bounds, border] = compute_axis_bounds(model, c)
+%
+%   Draw truss and optionally loaded model with color-mapped stresses.
+%
+% Inputs:
+%   model:
+%       Model structure.
+%
+%   c:
+%       Configuration structure.
+%
+% Output:
+%   axis_bounds:
+%       Axis bounds for use by axis function.
+%
+%   border:
+%       Scalar border width around truss plot.
+%
 function [axis_bounds, border] = ...
         compute_axis_bounds(model, c)
 
@@ -42,17 +107,28 @@ function [axis_bounds, border] = ...
     % Compute border width.
     border = (max_coords - min_coords)*c.border_width;
     border = border(1:model.dimensions);
-    border = repmat(mean(border), size(border));
+    border = mean(border);
 
     % Compute axis bounds.
     axis_bounds = [];
     for i = 1:model.dimensions
         axis_bounds = cat(2, axis_bounds, ...
-            [min_coords(i)-border(i), max_coords(i)+border(i)]);
+            [min_coords(i)-border, max_coords(i)+border]);
     end
 end
 
 
+% plot_forces(model, c)
+%
+%   Plot force vectors.
+%
+% Inputs:
+%   model:
+%       Model structure.
+%
+%   c:
+%       Configuration structure.
+%
 function plot_forces(model, c)
 
     % Compute maximum force.
@@ -70,7 +146,7 @@ function plot_forces(model, c)
 
         % Compute length and tip of force vector (not based on force).
         vector = model.forces(i).vector(1:model.dimensions);
-        vector = vector/max_force*mean(c.border)*0.5;
+        vector = vector/max_force*c.border*0.5;
         tip = base + vector;
 
         % Draw vector.
@@ -81,7 +157,7 @@ function plot_forces(model, c)
 
         % Draw label.
         str = sprintf('F_{%d}', i);
-        unit_vector = vector/norm(vector)*mean(c.border);
+        unit_vector = vector/norm(vector)*c.border;
         switch model.dimensions
             case 2
                 h = text(...
@@ -99,6 +175,17 @@ function plot_forces(model, c)
 end
 
 
+% plot_initial_nodes(model, c)
+%
+%   Plot nodes of unloaded truss.
+%
+% Inputs:
+%   model:
+%       Model structure.
+%
+%   c:
+%       Configuration structure.
+%
 function plot_initial_nodes(model, c)
     coords = cat(1, model.nodes.coords);
     switch model.dimensions
@@ -112,6 +199,17 @@ function plot_initial_nodes(model, c)
 end
 
 
+% plot_initial_elements(model, c)
+%
+%   Plot elements of unloaded truss.
+%
+% Inputs:
+%   model:
+%       Model structure.
+%
+%   c:
+%       Configuration structure.
+%
 function plot_initial_elements(model, c)
     for i = 1:numel(model.elements)
         element = model.elements(i);
@@ -130,6 +228,17 @@ function plot_initial_elements(model, c)
 end
 
 
+% set_colorbar(model, c)
+%
+%   Setup colorbar for stresses.
+%
+% Inputs:
+%   model:
+%       Model structure.
+%
+%   c:
+%       Configuration structure.
+%
 function set_colorbar(model, c)
     colormap(c.colormap);
     stresses = cat(1, model.elements.stress);
@@ -141,6 +250,17 @@ function set_colorbar(model, c)
 end
 
 
+% plot_result_elements(model, c)
+%
+%   Plot stress color-coded elements of loaded truss.
+%
+% Inputs:
+%   model:
+%       Model structure.
+%
+%   c:
+%       Configuration structure.
+%
 function plot_result_elements(model, c)
     for i = 1:numel(model.elements)
         element = model.elements(i);
@@ -161,6 +281,17 @@ function plot_result_elements(model, c)
 end
 
 
+% plot_result_nodes(model, c)
+%
+%   Plot displaced nodes of loaded truss.
+%
+% Inputs:
+%   model:
+%       Model structure.
+%
+%   c:
+%       Configuration structure.
+%
 function plot_result_nodes(model, c)
     coords = cat(1, model.nodes.coords) + cat(1, model.nodes.delta);
     switch model.dimensions
@@ -174,6 +305,17 @@ function plot_result_nodes(model, c)
 end
 
 
+% plot_constraints(model, c)
+%
+%   Plot constraints.
+%
+% Inputs:
+%   model:
+%       Model structure.
+%
+%   c:
+%       Configuration structure.
+%
 function plot_constraints(model, c)
     for i = 1:numel(model.nodes)
         node = model.nodes(i);
@@ -189,6 +331,21 @@ function plot_constraints(model, c)
 end
 
 
+% plot_constraint_2d(c, coords, constraint)
+%
+%   Plot a 2D constraint.
+%
+% Inputs:
+%   c:
+%       Configuration structure.
+%
+%   coords:
+%       2 element coordinate vector of location of constraint.
+%
+%   constraint:
+%       2 element boolean constraint vector.  True is constraint, false
+%       is unconstrained.
+%
 function plot_constraint_2d(c, coords, constraint)
 
     w = c.constraint_size;
@@ -196,14 +353,14 @@ function plot_constraint_2d(c, coords, constraint)
     % Plot x-constraint.
     if constraint(1)
         x = [coords(1), coords(1)];
-        y = [coords(2)-c.border(2)*w, coords(2)+c.border(2)*w];
+        y = [coords(2)-c.border*w, coords(2)+c.border*w];
         h = plot(x, y);
         h.Color = c.constraint_color;
     end
 
     % Plot y-constraint.
     if constraint(2)
-        x = [coords(1)-c.border(1)*w, coords(1)+c.border(1)*w];
+        x = [coords(1)-c.border*w, coords(1)+c.border*w];
         y = [coords(2), coords(2)];
         h = plot(x, y);
         h.Color = c.constraint_color;
@@ -211,6 +368,21 @@ function plot_constraint_2d(c, coords, constraint)
 end
 
 
+% plot_constraint_3d(c, coords, constraint)
+%
+%   Plot a 3D constraint.
+%
+% Inputs:
+%   c:
+%       Configuration structure.
+%
+%   coords:
+%       3 element coordinate vector of location of constraint.
+%
+%   constraint:
+%       3 element boolean constraint vector.  True is constraint, false
+%       is unconstrained.
+%
 function plot_constraint_3d(c, coords, constraint)
 
     w = c.constraint_size;
@@ -218,31 +390,31 @@ function plot_constraint_3d(c, coords, constraint)
     % Plot x-constraint.
     if constraint(1)
         x = [coords(1), coords(1), coords(1), coords(1)];
-        y = [coords(2)-c.border(2)*w, coords(2)+c.border(2)*w ...
-             coords(2)+c.border(2)*w, coords(2)-c.border(2)*w];
-        z = [coords(3)-c.border(3)*w, coords(3)-c.border(3)*w ...
-             coords(3)+c.border(3)*w, coords(3)+c.border(3)*w];
+        y = [coords(2)-c.border*w, coords(2)+c.border*w ...
+             coords(2)+c.border*w, coords(2)-c.border*w];
+        z = [coords(3)-c.border*w, coords(3)-c.border*w ...
+             coords(3)+c.border*w, coords(3)+c.border*w];
         h = fill3(x, y, z, c.constraint_color_3d);
         h.EdgeColor = c.constraint_color;
     end
 
     % Plot y-constraint.
     if constraint(2)
-        x = [coords(1)-c.border(1)*w, coords(1)+c.border(1)*w ...
-             coords(1)+c.border(1)*w, coords(1)-c.border(1)*w];
+        x = [coords(1)-c.border*w, coords(1)+c.border*w ...
+             coords(1)+c.border*w, coords(1)-c.border*w];
         y = [coords(2), coords(2), coords(2), coords(2)];
-        z = [coords(3)-c.border(3)*w, coords(3)-c.border(3)*w ...
-             coords(3)+c.border(3)*w, coords(3)+c.border(3)*w];
+        z = [coords(3)-c.border*w, coords(3)-c.border*w ...
+             coords(3)+c.border*w, coords(3)+c.border*w];
         h = fill3(x, y, z, c.constraint_color_3d);
         h.EdgeColor = c.constraint_color;
     end
 
     % Plot z-constraint.
     if constraint(3)
-        x = [coords(1)-c.border(1)*w, coords(1)+c.border(1)*w ...
-             coords(1)+c.border(1)*w, coords(1)-c.border(1)*w];
-        y = [coords(2)-c.border(2)*w, coords(2)-c.border(2)*w ...
-             coords(2)+c.border(2)*w, coords(2)+c.border(2)*w];
+        x = [coords(1)-c.border*w, coords(1)+c.border*w ...
+             coords(1)+c.border*w, coords(1)-c.border*w];
+        y = [coords(2)-c.border*w, coords(2)-c.border*w ...
+             coords(2)+c.border*w, coords(2)+c.border*w];
         z = [coords(3), coords(3), coords(3), coords(3)];
         h = fill3(x, y, z, c.constraint_color_3d);
         h.EdgeColor = c.constraint_color;
@@ -277,7 +449,17 @@ function plot_constraint_3d(c, coords, constraint)
 end
 
 
-% This sets labels and adjusts axes.
+% plot_constraints(model, c)
+%
+%   Set labels, axes bounds, and grids.
+%
+% Inputs:
+%   model:
+%       Model structure.
+%
+%   c:
+%       Configuration structure.
+%
 function set_labels(model, c)
     axis equal;
     xlabel('x');
