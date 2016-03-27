@@ -146,7 +146,7 @@ function plot_forces(model, c)
 
         % Compute length and tip of force vector (not based on force).
         vector = model.forces(i).vector(1:model.dimensions);
-        vector = vector/max_force*c.border*0.5;
+        vector = vector/max_force*c.border*0.75;
         tip = base + vector;
 
         % Draw vector.
@@ -424,7 +424,7 @@ function plot_constraint_3d(c, coords, constraint)
     if constraint(1) && constraint(2)
         x = [coords(1), coords(1)];
         y = [coords(2), coords(2)];
-        z = [coords(3)-c.border(3)*w, coords(3)+c.border(3)*w];
+        z = [coords(3)-c.border*w, coords(3)+c.border*w];
         h = plot3(x, y, z);
         h.Color = c.constraint_color;
     end
@@ -432,7 +432,7 @@ function plot_constraint_3d(c, coords, constraint)
     % Plot xz-constraint line.
     if constraint(1) && constraint(3)
         x = [coords(1), coords(1)];
-        y = [coords(2)-c.border(2)*w, coords(2)+c.border(2)*w];
+        y = [coords(2)-c.border*w, coords(2)+c.border*w];
         z = [coords(3), coords(3)];
         h = plot3(x, y, z);
         h.Color = c.constraint_color;
@@ -440,7 +440,7 @@ function plot_constraint_3d(c, coords, constraint)
 
     % Plot yz-constraint line.
     if constraint(2) && constraint(3)
-        x = [coords(1)-c.border(1)*w, coords(1)+c.border(1)*w];
+        x = [coords(1)-c.border*w, coords(1)+c.border*w];
         y = [coords(2), coords(2)];
         z = [coords(3), coords(3)];
         h = plot3(x, y, z);
