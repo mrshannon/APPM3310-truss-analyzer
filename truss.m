@@ -1,4 +1,5 @@
-function model = truss(varargin)
+function [model, figure_handle] = truss(varargin)
+
     add_library_path();
 
     % Load the model file.

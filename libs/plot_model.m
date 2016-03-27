@@ -1,4 +1,4 @@
-function figure_handle = plot_model_2d(model, plot_result)
+function figure_handle = plot_model(model, plot_result)
 
     c = config();
     c.plot_result = plot_result;
@@ -223,6 +223,7 @@ function plot_constraint_3d(c, coords, constraint)
         z = [coords(3)-c.border(3)*w, coords(3)-c.border(3)*w ...
              coords(3)+c.border(3)*w, coords(3)+c.border(3)*w];
         h = fill3(x, y, z, c.constraint_color_3d);
+        h.EdgeColor = c.constraint_color;
     end
 
     % Plot y-constraint.
@@ -233,6 +234,7 @@ function plot_constraint_3d(c, coords, constraint)
         z = [coords(3)-c.border(3)*w, coords(3)-c.border(3)*w ...
              coords(3)+c.border(3)*w, coords(3)+c.border(3)*w];
         h = fill3(x, y, z, c.constraint_color_3d);
+        h.EdgeColor = c.constraint_color;
     end
 
     % Plot z-constraint.
@@ -243,6 +245,7 @@ function plot_constraint_3d(c, coords, constraint)
              coords(2)+c.border(2)*w, coords(2)+c.border(2)*w];
         z = [coords(3), coords(3), coords(3), coords(3)];
         h = fill3(x, y, z, c.constraint_color_3d);
+        h.EdgeColor = c.constraint_color;
     end
 
     % Plot xy-constraint line.
