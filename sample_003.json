@@ -15,7 +15,8 @@
     {"nodes": [3, 4], "material": "mat"}
   ],
   "forces": [
-    {"node": 1, "vector": [0, 0, -10]}
+    {"node": 1, "vector": [0,  0, -10]},
+    {"node": 3, "vector": [2, -2,   0]}
   ],
   "materials": {
     "mat": {"modulus":  50, "area": 1}

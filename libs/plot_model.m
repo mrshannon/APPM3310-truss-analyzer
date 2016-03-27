@@ -135,7 +135,8 @@ function set_colorbar(model, c)
     stresses = cat(1, model.elements.stress);
     min_stress = min(stresses);
     max_stress = max(stresses);
-    caxis([min_stress, max_stress]);
+    stress_bound = max(abs(cat(1, min_stress, max_stress)));
+    caxis([-stress_bound, stress_bound]);
     xlabel(colorbar(), '\sigma', 'Rotation', 0, 'FontSize', 12);
 end
 
