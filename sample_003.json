@@ -1,34 +1,29 @@
 {
-  "dimensions": 2,
+  "dimensions": 3,
   "nodes": [
-    {"coords": [ 0, 0, 0], "constraint": "fixed"},
-    {"coords": [ 5, 5, 0], "constraint": "free"},
-    {"coords": [10, 0, 0], "constraint": "free"},
-    {"coords": [15, 5, 0], "constraint": "free"},
-    {"coords": [20, 0, 0], "constraint": "free"},
-    {"coords": [25, 5, 0], "constraint": "free"},
-    {"coords": [30, 0, 0], "constraint": "slider"}
+    {"coords": [ 0,       0,      10], "constraint": "free"},
+    {"coords": [ 9.4281,  0,      -3.3333], "constraint": "slider"},
+    {"coords": [-4.7140,  8.1650, -3.3333], "constraint": "plane"},
+    {"coords": [-4.7140, -8.1650, -3.3333], "constraint": "fixed"}
   ],
   "elements": [
-    {"nodes": [1, 2], "material": "steel"},
-    {"nodes": [2, 3], "material": "steel"},
-    {"nodes": [4, 5], "material": "steel"},
-    {"nodes": [6, 7], "material": "steel"},
-    {"nodes": [1, 3], "material": "steel"},
-    {"nodes": [3, 5], "material": "steel"},
-    {"nodes": [5, 7], "material": "steel"},
-    {"nodes": [2, 4], "material": "steel"},
-    {"nodes": [4, 6], "material": "steel"}
+    {"nodes": [1, 2], "material": "mat"},
+    {"nodes": [2, 3], "material": "mat"},
+    {"nodes": [3, 1], "material": "mat"},
+    {"nodes": [1, 4], "material": "mat"},
+    {"nodes": [2, 4], "material": "mat"},
+    {"nodes": [3, 4], "material": "mat"}
   ],
   "forces": [
-    {"node": 4, "vector": [0, -100, 0]}
+    {"node": 1, "vector": [0, 0, -10]}
   ],
   "materials": {
-    "steel": {"modulus": 3e7, "area": 0.5}
+    "mat": {"modulus":  50, "area": 1}
   },
   "constraints": {
-    "free": [false, false, false],
-    "slider": [false, true, false],
-    "fixed": [true, true, true]
+    "fixed": [true, true, true],
+    "slider": [true, false, true],
+    "plane": [false, false, true],
+    "free": [false, false, false]
   }
 }
