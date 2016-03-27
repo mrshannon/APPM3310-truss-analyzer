@@ -1,0 +1,31 @@
+{
+  "comments": "A simple statically indeterminate structure.",
+  "dimensions": 2,
+  "nodes": [
+    {"coords": [ 0,  0, 0], "constraint": "fixed"},
+    {"coords": [10,  0, 0], "constraint": "slider"},
+    {"coords": [10, 10, 0], "constraint": "free"}
+    {"coords": [0, 10, 0], "constraint": "free"}
+  ],
+  "elements": [
+    {"nodes": [1, 2], "material": "mat1"},
+    {"nodes": [2, 3], "material": "mat2"},
+    {"nodes": [3, 1], "material": "mat3"},
+    {"nodes": [1, 4], "material": "mat2"},
+    {"nodes": [3, 4], "material": "mat1"},
+    {"nodes": [2, 4], "material": "mat3"}
+  ],
+  "forces": [
+    {"node": 3, "vector": [4, 2, 0]}
+  ],
+  "materials": {
+    "mat1": {"modulus":  50, "area": 2},
+    "mat2": {"modulus":  50, "area": 1},
+    "mat3": {"modulus": 100, "area": 2.8284}
+  },
+  "constraints": {
+    "free": [false, false, false],
+    "slider": [false, true, false],
+    "fixed": [true, true, true]
+  }
+}
