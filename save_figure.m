@@ -1,4 +1,4 @@
-% save_figure(filename)
+% save_figure(filename, scale_factor)
 %
 %   Save current figure as a PDF.
 %
