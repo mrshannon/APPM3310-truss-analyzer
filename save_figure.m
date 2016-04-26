@@ -16,8 +16,8 @@
 
 function save_figure(filename)
     h = gcf();
-    h.PaperSize = [20, 10];
-    h.PaperPosition = [0, 0, 20, 10];
+    h.PaperSize = [12, 7];
+    h.PaperPosition = [0, 0, 12, 7];
     print(h, filename, '-dpdf');
     system(sprintf('pdfcrop -margins "30" %s %s', filename, filename));
 end
